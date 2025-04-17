@@ -1,0 +1,14 @@
+package com.project.my_store.dto;
+
+
+import lombok.Data;
+
+@Data
+public class ImageDto {
+    private Long imageId;
+    private String imageName;
+    private String downloadUrl;
+
+    public ImageDto(Long id, String fileName, String downloadUrl) {
+    }
+}

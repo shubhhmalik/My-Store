@@ -1,6 +1,7 @@
 package com.project.my_store.service.product;
 
 import com.project.my_store.exceptions.ProductNotFoundException;
+import com.project.my_store.exceptions.ResourceNotFoundException;
 import com.project.my_store.model.Category;
 import com.project.my_store.model.Product;
 import com.project.my_store.repository.CategoryRepository;
@@ -48,20 +49,20 @@ public class ProductService implements IProductService{
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found!"));
     }
 
     @Override
-    public void deleteProductBYId(Long id) {
+    public void deleteProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found!"));
         productRepository.delete(product);
     }
 
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found!"));
         update(product, request);
         return productRepository.save(product);
     }

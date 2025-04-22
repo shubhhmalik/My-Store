@@ -9,7 +9,7 @@ import java.util.List;
 public interface IProductService {
     Product addProduct(AddProductRequest product);                         //cuz we're using the copy for this instead of the real entity
     Product getProductById(Long id);
-    void deleteProductBYId(Long id);
+    void deleteProductById(Long id);
     Product updateProduct(ProductUpdateRequest product, Long productId);
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);

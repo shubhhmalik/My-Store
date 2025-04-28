@@ -51,12 +51,13 @@ public class ImageService implements IImageService {
     @Override
     public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
         Product product = productService.getProductById(productId);
+
+        List<ImageDto> savedImageDto = new ArrayList<>();
+
+
         if (files == null || files.isEmpty()) {
             throw new ResourceNotFoundException("File Not Found!");
         }
-
-        List<ImageDto> savedImageDtos = new ArrayList<>();
-        String buildDownloadUrl = "/api/v1/images/image/download/";
 
         for (MultipartFile file : files) {
             try {
@@ -67,24 +68,28 @@ public class ImageService implements IImageService {
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(product);
 
+                // Set download URL after we have the ID
+                String buildDownloadUrl = "/api/v1/images/image/download/";
+                String downloadUrl = buildDownloadUrl + image.getId();
+                image.setDownloadUrl(downloadUrl);
                 Image savedImage = imageRepository.save(image);
 
-                // Set download URL after we have the ID
-                savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
+                savedImage.setDownloadUrl(buildDownloadUrl+savedImage.getId());
                 imageRepository.save(savedImage);
 
-                // Create and add DTO using proper field names
-                savedImageDtos.add(new ImageDto(
-                        savedImage.getId(),       // maps to imageId
-                        savedImage.getFileName(),  // maps to imageName
-                        savedImage.getDownloadUrl()
-                ));
+                ImageDto imageDto = new ImageDto();
+                imageDto.setImageId(savedImage.getId());
+                imageDto.setImageName(savedImage.getFileName());
+                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
+                savedImageDto.add(imageDto);
+
+
             } catch (IOException | SQLException e) {
                 throw new RuntimeException("Failed To Save Image: " + file.getOriginalFilename(), e);
             }
         }
 
-        return savedImageDtos;
+        return savedImageDto;
     }
 
 

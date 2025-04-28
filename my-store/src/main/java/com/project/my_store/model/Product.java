@@ -1,5 +1,6 @@
 package com.project.my_store.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Product {
     //the relationship of product with Category
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     //the relationship of product with Image

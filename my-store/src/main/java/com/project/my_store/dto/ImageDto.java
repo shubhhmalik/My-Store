@@ -9,6 +9,4 @@ public class ImageDto {
     private String imageName;
     private String downloadUrl;
 
-    public ImageDto(Long id, String fileName, String downloadUrl) {
-    }
 }

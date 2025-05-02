@@ -33,7 +33,7 @@ public class Product {
     //the relationship of product with Category
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
-    @JsonBackReference
+    //@JsonBackReference
     private Category category;
 
     //the relationship of product with Image

@@ -1,5 +1,6 @@
 package com.project.my_store.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,10 @@ public class Category {
 
     private String name;
 
+
+    @JsonIgnore            //solves serialisation problem and also we don't need json reference with this
     @OneToMany(mappedBy = "category")
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<Product> products;
 
     public Category(String name) {

@@ -36,6 +36,7 @@ public class Product {
     //@JsonBackReference
     private Category category;
 
+
     //the relationship of product with Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;

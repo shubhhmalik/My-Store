@@ -1,14 +1,21 @@
 package com.project.my_store.service.order;
 
+import com.project.my_store.dto.OrderDto;
+import com.project.my_store.enums.OrderStatus;
 import com.project.my_store.exceptions.ResourceNotFoundException;
 import com.project.my_store.model.*;
 import com.project.my_store.repository.OrderRepository;
 import com.project.my_store.repository.ProductRepository;
+import com.project.my_store.service.cart.CartService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -18,10 +25,32 @@ public class OrderService implements IOrderService{
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final CartService cartService;
+    private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public Order placeOrder(Long userId) {
-        return null;
+        Cart cart   = cartService.getCartByUserId(userId);
+
+        Order order = createOrder(cart);
+        List<OrderItem> orderItemList = createOrderItems(order, cart);
+
+        order.setOrderItems(new HashSet<>(orderItemList));
+        order.setTotalAmount(calculateTotalAmount(orderItemList));
+        Order savedOrder = orderRepository.save(order);
+
+        cartService.clearCart(cart.getId());
+
+        return savedOrder;
+        }
+
+    private Order createOrder(Cart cart) {
+        Order order = new Order();
+        order.setUser(cart.getUser());
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderDate(LocalDate.now());
+        return  order;
     }
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItemList) {
@@ -58,9 +87,24 @@ public class OrderService implements IOrderService{
         return orderItems;
     }
 
+
     @Override
     public Order getOrder(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(()->new ResourceNotFoundException("Order Not Found!"));
     }
+
+    @Override
+    public Order getUserOrder(Long userId) {
+        return orderRepository.findById(userId)
+                .orElseThrow(()->new ResourceNotFoundException("Order Not Found!"));
+    }
+
+
+    private OrderDto convertToDto(Order order) {
+        return modelMapper.map(order, OrderDto.class);
+    }
+
+
+
 }

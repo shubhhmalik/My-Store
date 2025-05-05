@@ -50,8 +50,8 @@ public class CartService implements ICartService{
         return savedCart.getId(); // the database-generated unique ID
     }
 
-//    @Override
-//    public Cart getCartByUserId(Long userId) {
-//        return cartRepository.findByUserId(userId);
-//    }
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+    }
 }

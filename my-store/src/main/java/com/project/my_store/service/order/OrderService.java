@@ -89,15 +89,18 @@ public class OrderService implements IOrderService{
 
 
     @Override
-    public Order getOrder(Long orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(()->new ResourceNotFoundException("Order Not Found!"));
+    public OrderDto getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        return convertToDto(order);
     }
 
     @Override
-    public Order getUserOrder(Long userId) {
-        return orderRepository.findById(userId)
-                .orElseThrow(()->new ResourceNotFoundException("Order Not Found!"));
+    public List<OrderDto> getUserOrders(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return  orders.stream()
+                .map(this :: convertToDto)
+                .toList();
     }
 
 

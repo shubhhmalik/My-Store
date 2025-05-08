@@ -19,5 +19,4 @@ public class AddProductRequest {
     private int inventory;
     private String description;
     private Category category;
-    private List<Image> images;
 }

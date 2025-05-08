@@ -16,5 +16,4 @@ public class ProductUpdateRequest {
     private int inventory;
     private String description;
     private Category category;
-    private List<Image> images;
 }

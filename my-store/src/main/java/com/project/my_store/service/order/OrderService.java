@@ -7,7 +7,7 @@ import com.project.my_store.model.*;
 import com.project.my_store.repository.OrderRepository;
 import com.project.my_store.repository.ProductRepository;
 import com.project.my_store.service.cart.CartService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,11 @@ public class OrderService implements IOrderService{
         order.setTotalAmount(calculateTotalAmount(orderItemList));
         Order savedOrder = orderRepository.save(order);
 
-        cartService.clearCart(cart.getId());
+        try {
+            cartService.clearCart(cart.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         return savedOrder;
         }
@@ -104,7 +108,8 @@ public class OrderService implements IOrderService{
     }
 
 
-    private OrderDto convertToDto(Order order) {
+    @Override
+    public OrderDto convertToDto(Order order) {
         return modelMapper.map(order, OrderDto.class);
     }
 

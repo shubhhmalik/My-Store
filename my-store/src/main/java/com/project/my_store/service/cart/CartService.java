@@ -2,9 +2,10 @@ package com.project.my_store.service.cart;
 
 import com.project.my_store.exceptions.ResourceNotFoundException;
 import com.project.my_store.model.Cart;
+import com.project.my_store.model.User;
 import com.project.my_store.repository.CartItemRepository;
 import com.project.my_store.repository.CartRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,15 @@ public class CartService implements ICartService{
     @Transactional                          //ie Either all steps complete or none
     @Override
     public void clearCart(Long id) {
-        Cart cart = cartRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Cart Not Fount"));
+        Cart cart = getCart(id);
         cartItemRepository.deleteAllByCartId(id);
+
+        // Break the relationship
+        User user = cart.getUser();
+        if (user != null) {
+            user.setCart(null); // Detach the Cart from User
+        }
+
         cartRepository.delete(cart);
     }
 

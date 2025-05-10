@@ -13,7 +13,6 @@ import java.util.List;
 
 @Getter
 @Setter
-//@AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
@@ -26,18 +25,16 @@ public class Product {
     private String name;
     private String brand;
     private BigDecimal price;
-    private int inventory;               //quantity
+    private int inventory;               
     private String description;
 
-    //add entities
-    //the relationship of product with Category
+    
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     //@JsonBackReference
     private Category category;
 
 
-    //the relationship of product with Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 

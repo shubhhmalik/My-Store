@@ -3,9 +3,11 @@ package com.project.my_store.security.config;
 
 import com.project.my_store.security.jwt.AuthEntryPoint;
 import com.project.my_store.security.jwt.AuthTokenFilter;
+import com.project.my_store.security.jwt.JwtUtils;
 import com.project.my_store.security.user.ShopUserDetailsService;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,8 @@ public class Shop {
 
     private final ShopUserDetailsService detailsService;
     private final AuthEntryPoint authEntryPoint;
+    private final JwtUtils jwtUtils;
+
     private static final List<String> SECURED_URLS = List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
 
     @Bean
@@ -47,7 +51,7 @@ public class Shop {
 
     @Bean
     public AuthTokenFilter authTokenFilter(){
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtUtils, detailsService);
     }
 
     @Bean
@@ -67,7 +71,7 @@ public class Shop {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
-                .sessionManagement(ession -> ession.sessionCreationPolicy(STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(SECURED_URLS.toArray(new String[0])).authenticated()
                         .anyRequest().permitAll()

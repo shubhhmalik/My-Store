@@ -8,10 +8,13 @@ import com.project.my_store.model.Product;
 import com.project.my_store.requests.AddProductRequest;
 import com.project.my_store.requests.ProductUpdateRequest;
 import com.project.my_store.response.ApiResponse;
+import com.project.my_store.security.jwt.JwtUtils;
 import com.project.my_store.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
+    private final JwtUtils jwtUtils;
 
 
     @GetMapping("/all")
@@ -45,6 +49,17 @@ public class ProductController {
         }
     }
 
+    //to test token
+//    @GetMapping("/validate-token")
+//    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+//        try {
+//            String jwt = token.replace("Bearer ", "");
+//            boolean isValid = jwtUtils.validateToken(jwt);
+//            return ResponseEntity.ok("Token valid: " + isValid);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Invalid token: " + e.getMessage());
+//        }
+//    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")

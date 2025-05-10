@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor                                   //for constructor dependency injection, whenever needed(only the ones that are non-static final)
+@RequiredArgsConstructor                                   
 public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
@@ -30,8 +30,6 @@ public class ProductService implements IProductService{
 
     @Override
     public Product addProduct(AddProductRequest request) {
-        //if the category is already there, then set it as product category,
-        //if not then create it first and then set it as product category
 
         if(productExists(request.getName(), request.getBrand())){
             throw new AlreadyExistsException(request.getBrand()+" "+request.getName()+ " already exists!");
@@ -131,7 +129,7 @@ public class ProductService implements IProductService{
 
 
     @Override
-    public List<ProductDto> getConvertedProducts(List<Product> products){       //already made dto list
+    public List<ProductDto> getConvertedProducts(List<Product> products){       //dto list
         return products.stream().map(this::convertToDto).toList();
     }
 

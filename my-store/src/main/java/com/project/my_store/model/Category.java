@@ -25,7 +25,7 @@ public class Category {
     private String name;
 
 
-    @JsonIgnore            //solves serialisation problem and also we don't need json reference with this
+    @JsonIgnore            
     @OneToMany(mappedBy = "category")
     //@JsonManagedReference
     private List<Product> products;

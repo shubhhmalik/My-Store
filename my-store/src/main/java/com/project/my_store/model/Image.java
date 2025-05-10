@@ -17,7 +17,7 @@ import java.sql.Blob;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   //The DB automatically generates a unique value when a new row is added
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   
     private Long id;
     private String fileName;
     private String fileType;
@@ -27,7 +27,7 @@ public class Image {
     private String downloadUrl;
 
 
-    @ManyToOne                              //as one product has many images
+    @ManyToOne                              
     @JoinColumn(name = "product_id")
     private Product product;
 }

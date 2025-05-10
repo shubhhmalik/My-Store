@@ -27,7 +27,7 @@ public class ShopUserDetails implements UserDetails {
     public static ShopUserDetails buildUserDetails(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));      //Security class representing permission
+            authorities.add(new SimpleGrantedAuthority(role.getName()));      
         }
         return new ShopUserDetails(
                 user.getId(),

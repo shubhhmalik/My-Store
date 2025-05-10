@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -51,10 +52,14 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Long initializeNewCart() {
+    public Cart initializeNewCart(User user) {
+        Cart existingCart = getCartByUserId(user.getId());
+        if (existingCart != null) {
+            return existingCart;
+        }
         Cart newCart = new Cart();
-        Cart savedCart = cartRepository.save(newCart);
-        return savedCart.getId(); // the database-generated unique ID
+        newCart.setUser(user);
+        return cartRepository.save(newCart);
     }
 
     @Override

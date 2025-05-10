@@ -1,12 +1,13 @@
 package com.project.my_store.repository;
 
-import com.project.my_store.model.Order;
 import com.project.my_store.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
-public interface RoleRepositiory extends JpaRepository<Role, Long> {
-    Collection<Object> findByName(String role);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findByName(String roleName);
 
 }
+

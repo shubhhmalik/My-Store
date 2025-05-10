@@ -2,6 +2,7 @@ package com.project.my_store.service.product;
 
 import com.project.my_store.dto.ImageDto;
 import com.project.my_store.dto.ProductDto;
+import com.project.my_store.exceptions.AlreadyExistsException;
 import com.project.my_store.exceptions.ResourceNotFoundException;
 import com.project.my_store.model.Category;
 import com.project.my_store.model.Image;
@@ -32,6 +33,10 @@ public class ProductService implements IProductService{
         //if the category is already there, then set it as product category,
         //if not then create it first and then set it as product category
 
+        if(productExists(request.getName(), request.getBrand())){
+            throw new AlreadyExistsException(request.getBrand()+" "+request.getName()+ " already exists!");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -40,7 +45,7 @@ public class ProductService implements IProductService{
         request.setCategory(category);
         return productRepository.save(createProduct(request, category));
     }
-    //helper method for addProduct
+    //helper methods for addProduct
     private Product createProduct(AddProductRequest request, Category category){
         return new Product(
                 request.getName(),
@@ -50,6 +55,9 @@ public class ProductService implements IProductService{
                 request.getDescription(),
                 category
         );
+    }
+    private boolean productExists(String name, String brand){
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     @Override

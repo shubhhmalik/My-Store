@@ -74,11 +74,9 @@ public class OrderService implements IOrderService{
 
         for (CartItem i : cart.getItems()) {
             Product product = i.getProduct();
-            //update product inventory
             product.setInventory(product.getInventory() - i.getQuantity());
             productRepository.save(product);
 
-            //create new order item
             OrderItem orderItem = new OrderItem(
                     order,
                     product,

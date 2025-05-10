@@ -8,7 +8,7 @@ import com.project.my_store.requests.ProductUpdateRequest;
 import java.util.List;
 
 public interface IProductService {
-    Product addProduct(AddProductRequest product);                         //cuz we're using the copy for this instead of the real entity
+    Product addProduct(AddProductRequest product);                        
     Product getProductById(Long id);
     void deleteProductById(Long id);
     Product updateProduct(ProductUpdateRequest product, Long productId);

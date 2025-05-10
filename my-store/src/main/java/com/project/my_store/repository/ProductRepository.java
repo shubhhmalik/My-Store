@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findByCategoryName(String category);  //'Name' we are going to find by name of category,findBy indicates a query operation and CategoryName is the property to query (resolves to category.name)
-                                                        //This follows Spring Data JPA's naming convention to automatically generate queries
-    List<Product> findByBrand(String brand);           //category is a class and brand is an object, hence the 'Name' specification in one and not other
+    List<Product> findByCategoryName(String category);  
+                                                        
+    List<Product> findByBrand(String brand);           
 
     List<Product> findByCategoryNameAndBrand(String category, String brand);
 

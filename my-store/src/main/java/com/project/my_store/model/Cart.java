@@ -51,7 +51,7 @@ public class Cart {
         for (CartItem item : items) {
             BigDecimal price = item.getUnitPrice();
             if (price == null) {
-                continue; // Skip if price is null
+                continue; 
             }
             BigDecimal itemTotal = price.multiply(BigDecimal.valueOf(item.getQuantity()));
             total = total.add(itemTotal);

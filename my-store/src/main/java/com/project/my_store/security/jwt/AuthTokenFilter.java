@@ -34,21 +34,21 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             throws IOException, ServletException {
         try {
             String jwt = parseJwt(request);
-            logger.info("Extracted JWT: " + jwt); // Log 1: Token extracted
+            logger.info("Extracted JWT: " + jwt); //token extracted
 
             if (jwt != null && jwtUtils.validateToken(jwt)) {
                 String username = jwtUtils.getUsernameFromToken(jwt);
-                logger.info("Authenticating user: " + username); // Log 2: User extracted
+                logger.info("Authenticating user: " + username); //user extracted
 
                 UserDetails userDetails = detailsService.loadUserByUsername(username);
-                logger.info("User authorities: " + userDetails.getAuthorities()); // Log 3: Roles
+                logger.info("User authorities: " + userDetails.getAuthorities()); //roles
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("Security context updated for user: " + username); // Log 4: update
+                logger.info("Security context updated for user: " + username); //update
             }
         } catch (Exception e) {
             logger.error("Authentication error: " + e.getMessage(), e);

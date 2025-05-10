@@ -44,12 +44,12 @@ public class ImageController {
     @GetMapping("/image/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {
         Image image = imageService.getImageById(imageId);
-        byte[] imageBytes = image.getImage().getBytes(1,(int) image.getImage().length());                       //convert the BLOB(image) to bytes, reads the BLOB content
-        ByteArrayResource resource = new ByteArrayResource(imageBytes);                           //Wraps in ByteArrayResource
+        byte[] imageBytes = image.getImage().getBytes(1,(int) image.getImage().length());                       
+        ByteArrayResource resource = new ByteArrayResource(imageBytes);                           
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,                                                   //force download with original filename
+                .header(HttpHeaders.CONTENT_DISPOSITION,                                                   
                         "attachment.filename=/" + image.getFileName() + "\"")
                 .body(resource);
     }

@@ -15,3 +15,4 @@ It includes features product browsing, an authentication process for users, cart
 - Database: MySQL
 - Build Tool: Maven
 
+## Clone the repository:

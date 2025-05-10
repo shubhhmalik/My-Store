@@ -11,8 +11,9 @@ It includes features product browsing, an authentication process for users, cart
 
 ## Technologies Used
 - Backend: Java
-- Frameworks: Spring Boot (if applicable)
+- Frameworks: Spring Boot
 - Database: MySQL
 - Build Tool: Maven
 
 ## Clone the repository:
+https://github.com/shubhhmalik/My-Store.git

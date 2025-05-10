@@ -36,14 +36,9 @@ public class ImageService implements IImageService {
 
     @Override
     public void deleteImageById(Long id) {
-        imageRepository.findById(id)
-                .ifPresentOrElse(imageRepository :: delete, ()->{
-                    throw new ResourceNotFoundException("Image Not Found!");
-                });
-        //the above simply means
-        // Image image = imageRepository.findById(id)
-        //         .orElseThrow(()-> new ResourceNotFoundException("Image Not Found!"));
-        //imageRepository.delete(image);
+        Image image = imageRepository.findById(id)
+                 .orElseThrow(()-> new ResourceNotFoundException("Image Not Found!"));
+        imageRepository.delete(image);
     }
 
 
@@ -61,14 +56,14 @@ public class ImageService implements IImageService {
 
         for (MultipartFile file : files) {
             try {
-                // Create and save image
+                
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(product);
 
-                // Set download URL after we have the ID
+                
                 String buildDownloadUrl = "/api/v1/images/image/download/";
                 String downloadUrl = buildDownloadUrl + image.getId();
                 image.setDownloadUrl(downloadUrl);
@@ -108,7 +103,7 @@ public class ImageService implements IImageService {
         try {
             image.setFileName(file.getOriginalFilename());
             image.setFileType(file.getContentType());
-            image.setImage(new SerialBlob(file.getBytes()));      //basically to convert binary data to SQL Blob object
+            image.setImage(new SerialBlob(file.getBytes()));      
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }

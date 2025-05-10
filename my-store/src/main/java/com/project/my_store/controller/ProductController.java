@@ -49,17 +49,6 @@ public class ProductController {
         }
     }
 
-    //to test token
-//    @GetMapping("/validate-token")
-//    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
-//        try {
-//            String jwt = token.replace("Bearer ", "");
-//            boolean isValid = jwtUtils.validateToken(jwt);
-//            return ResponseEntity.ok("Token valid: " + isValid);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Invalid token: " + e.getMessage());
-//        }
-//    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
